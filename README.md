@@ -1,5 +1,5 @@
 # 497R
-497R Airframe Project 2023
+497R Airframe Project 1 2023
 
 ME EN 497R Airfoil Analysis Assignment
 Background
