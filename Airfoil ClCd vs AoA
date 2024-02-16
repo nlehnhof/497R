@@ -1,7 +1,6 @@
 using Xfoil, Plots, Printf
 pyplot()
 
-
 function airfoil(file)
     # read airfoil coordinates from a file
     x, y = open(file, "r") do f
