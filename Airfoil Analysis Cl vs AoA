@@ -1,337 +1,134 @@
-# Basic Aerodynamic Principles as Constructed Through Computer-Aided Analysis
-
-Nathan Lehnhof
-Fall 2023
-
-# Abstract:
-Using the XFoil package on Julia, analysis was performed on various NACA 4-series airfoils to explore the effect of the Angle of Attack (AoA) on the Coefficient of Lift (Cl), Coefficient of Drag (Cd), and Coefficient of Moment (Cm). Also, the effect of Reynold’s Number (Re) on Cl, Cd, and Cm was analyzed, as was the effect of Airfoil Thickness and Airfoil Camber on the Airfoil Lift-to-Drag Ratio and Lift Curve Slope Behavior.
-
-# Basic Formulas and Definitions:
-
-Aerodynamic Center: The point along the chord of the airfoil along which the moment remains constant even if the angle of attack of the aircraft changes.
-
-Angle of Attack: The angle between the chord and the freestream velocity of the fluid.
-
-Center of Pressure: The point on the airfoil about which the aerodynamic moment is zero. The resulting force vector due to pressure distribution and shear stress distribution acting through this point.
-
-# Methods:
-The Effect of AoA on Cl, Cd, and Cm
-The NACA 0008 airfoil was analyzed with the XFoil extension in Julia with Reynold’s Number of Re = 1e6 and a range of AoA from -9 degrees to 10 degrees, with a step size of 0.5 degrees.
-
-The following graphs were produced:
-  Angle of Attack vs. Coefficient of Lift 0008
-  Angle of Attack vs. Coefficient of Drag 0008
-  Angle of Attack vs. Coefficient of Moment 0008
-
-The Effect of the Reynold’s Number on Cl, Cd, and Cm
-The NACA 0008 airfoil was analyzed with the XFoil extension in Julia with a range of AoA from -9 degrees to 10 degrees, with a step size of 0.5 degrees.
-The three different Reynold’s Numbers used were 1e6, 1e7, and 1e8.
-
-The following graphs were produced with the different analyses plotted on the same graphs:
-
-Blue → Re = 1e6
-Green → Re = 1e7
-Red → Re = 1e8 
-Angle of Attack vs. Coefficient of Lift Re
-Angle of Attack vs. Coefficient of Drag Re
-Angle of Attack vs. Coefficient of Moment Re
-The Effect of Airfoil Thickness and Camber on Airfoil Lift-to-Drag Ratio and Lift Curve Slope Behavior
-Airfoil Thickness
-The NACA 0008, NACA 0012, and NACA 0024 airfoils were analyzed and compared with the XFoil extension in Julia with a range of AoA from -9 degrees to 10 degrees, with a step size of 0.5 degrees and a Reynold’s number of 1e6. 
-
-The following graphs were produced:
-Blue = 0008
-Green = 0012
-Red = 0024
-Coefficient of Lift vs. Coefficient of Drag for 0008, 0012, 0024
-Angle of Attack vs. Coefficient of Lift for 0008, 0012, 0024
-Airfoil Camber
-The NACA 2412, NACA 3412, and NACA 4412 airfoils were analyzed and compared with the XFoil extension in Julia with a range of AoA from -5 degrees to 10 degrees, with a step size of 0.5 degrees and a Reynold’s number of 1e6.
-
-The following graphs were produced:
-Blue = 2412
-Green = 3412
-Red = 4412
-
-# Angle of Attack vs. Coefficient of Lift 2412, 3412, 4412
-
-# Coefficient of Drag vs. Coefficient of Lift 2412, 3412, 4412
-
-# The Effect of AoA on Cl, Cd, and Cm
-
-As the Angle of Attack increases, Cl continues to increase until the stall point. The Cl is greater than one when the AoA is zero for positively cambered airfoils. For symmetrical airfoils, the Cl is equal to zero when the AoA is zero. This occurs because as the AoA increases, the pressure gradient also increases, resulting in a greater lift force. Once the AoA passes the stall point, Cl drops because the boundary layer separation reduces the pressure gradient significantly.
-
-For all airfoils, the Cd is never zero but has a minimum at the AoA where the profile of the airfoil is the smallest. For symmetrical airfoils, this is zero degrees. This is because as AoA increases, the profile of the airfoil also increases, thus increasing the profile drag of the airfoil.
-
-For smaller angles of attack, the Cm is generally constant (within a change of 0.01). Once the AoA increases (for 0008: beyond 5 degrees), the magnitude of the Cm also increases. This occurs because, under operational angles of attack, the aerodynamic center is close to the center of pressure, thus, the torque on the airfoil is minimal. As the AoA increases, the center of pressure moves further from the aerodynamic center (generally at the quarter chord), thus increasing the moment on the airfoil.
-
-# The Effect of the Reynold’s Number on Cl, Cd, and Cm
-
-At higher Reynold’s Numbers, the Cl does not experience a great difference, while the Cd and Cm do. With a larger Re, the boundary layer separation occurs at a greater AoA. This is why the maximum coefficient of lift constant occurs later for airfoils moving through fluid with a larger Re. 
-
-Similarly, Cd is greater for lower Re numbers because a lower Re indicates a lower pressure. As seen in the equation for Cd, a lower pressure will result in a higher coefficient of drag. Also, with the velocity held constant, a greater Re indicates that the Nu of the fluid is smaller, leading to less profile drag and pressure drag.
-
-As seen with the Cd, the Cm does not experience a great change but seems to almost smooth out at higher Reynold’s numbers. This is because, at higher Re, the aerodynamic center stays closer to the center of pressure for greater angles of attack. The center of pressure moves forward at higher Reynold numbers. The AoA of a stall (where the Cm increases greatly) is higher, so the changes in the Cm are smaller at lower AoA.
-
-The Effect of Airfoil Thickness and Camber on Airfoil Lift-to-Drag Ratio and Lift Curve Slope Behavior
-
-As the thickness of an airfoil increases, the Lift-to-Drag ratio decreases because thicker airfoils produce more profile drag. As the Cd increases, the Lift-to-Drag ratio decreases. While the differences in the Cl are small, a thicker airfoil will have a greater coefficient of lift because it creates a greater pressure gradient. The thicker airfoil will also have a later boundary layer separation. This means that the thicker airfoil has a greater range of AoA.
-
-As the camber of an airfoil increases, the Lift-to-Drag ratio increases and the Lift Curve is greater because the Cl increases. A greater cambered airfoil can redirect air at a stepper angle, thus providing greater lift using Newton’s third law of motion: for every action, there is an equal and opposite reaction.
-
-# Data Tables
-
-NACA 0008
-Angle             Cl                    Cd                  Cm                  Converged
--9.000000       -0.942406       0.021005        -0.008246       1
--8.500000       -0.905170       0.017313        -0.006183       1
--8.000000       -0.857617       0.015931        -0.005157       1
--7.500000       -0.809832       0.014478        -0.003995       1
--7.000000       -0.761615       0.013136        -0.002787       1
--6.500000       -0.712578       0.012051        -0.001622       1
--6.000000       -0.666128       0.010496        0.000095        1
--5.500000       -0.616504       0.009808        0.001287        1
--5.000000       -0.567557       0.009062        0.002689        1
--4.500000       -0.518216       0.008518        0.003984        1
--4.000000       -0.469085       0.008036        0.005287        1
--3.500000       -0.420648       0.007420        0.006554        1
--3.000000       -0.363145       0.006682        0.005682        1
--2.500000       -0.292326       0.005924        0.001875        1
--2.000000       -0.224065       0.005287        -0.001169       1
--1.500000       -0.158689       0.004716        -0.003381       1
--1.000000       -0.100063       0.004281        -0.003751       1
--0.500000       -0.049262       0.003996        -0.002106       1
-0.000000        0.000000        0.003892        -0.000000       1
-0.500000        0.049262        0.003996        0.002106        1
-1.000000        0.100062        0.004281        0.003751        1
-1.500000        0.158686        0.004716        0.003382        1
-2.000000        0.224064        0.005287        0.001169        1
-2.500000        0.292334        0.005924        -0.001877       1
-3.000000        0.363153        0.006682        -0.005684       1
-3.500000        0.420591        0.007420        -0.006542       1
-4.000000        0.469030        0.008035        -0.005275       1
-4.500000        0.518165        0.008517        -0.003973       1
-5.000000        0.567511        0.009062        -0.002679       1
-5.500000        0.616464        0.009808        -0.001278       1
-6.000000        0.666102        0.010496        -0.000089       1
-6.500000        0.712571        0.012050        0.001624        1
-7.000000        0.761623        0.013136        0.002785        1
-7.500000        0.809855        0.014478        0.003990        1
-8.000000        0.857656        0.015931        0.005149        1
-8.500000        0.905226        0.017313        0.006171        1
-9.000000        0.942463        0.021012        0.008231        1
-9.500000        0.972601        0.025988        0.010768        1
-10.000000       1.004115        0.029714        0.012769        1
-
-# NACA 0012
-Angle             Cl                    Cd                  Cm                  Converged
--9.000000       -0.995184       0.013387        -0.000901       1
--8.500000       -0.951833       0.012787        0.001380        1
--8.000000       -0.910739       0.012061        0.004093        1
--7.500000       -0.868755       0.011493        0.006715        1
--7.000000       -0.826412       0.011001        0.009251        1
--6.500000       -0.763521       0.010342        0.007367        1
--6.000000       -0.694274       0.009721        0.004146        1
--5.500000       -0.626711       0.009101        0.001335        1
--5.000000       -0.558366       0.008478        -0.001634       1
--4.500000       -0.488088       0.007848        -0.005016       1
--4.000000       -0.428861       0.007290        -0.005776       1
--3.500000       -0.373045       0.006802        -0.005659       1
--3.000000       -0.319943       0.006396        -0.004835       1
--2.500000       -0.267336       0.006063        -0.003880       1
--2.000000       -0.214241       0.005810        -0.003000       0
--1.500000       -0.160914       0.005615        -0.002184       1
--1.000000       -0.107410       0.005484        -0.001417       1
--0.500000       -0.053792       0.005418        -0.000686       1
-0.000000        -0.000000       0.005393        0.000000        1
-0.500000        0.053792        0.005418        0.000685        1
-1.000000        0.107411        0.005484        0.001417        1
-1.500000        0.160918        0.005615        0.002183        1
-2.000000        0.214247        0.005810        0.002999        0
-2.500000        0.267346        0.006063        0.003878        1
-3.000000        0.319956        0.006396        0.004832        1
-3.500000        0.373057        0.006802        0.005656        1
-4.000000        0.428874        0.007290        0.005774        1
-4.500000        0.488112        0.007848        0.005011        1
-5.000000        0.558389        0.008477        0.001628        1
-5.500000        0.626727        0.009101        -0.001339       1
-6.000000        0.694328        0.009721        -0.004158       1
-6.500000        0.763577        0.010341        -0.007380       1
-7.000000        0.826267        0.010999        -0.009221       1
-7.500000        0.868618        0.011491        -0.006687       1
-8.000000        0.910617        0.012059        -0.004068       1
-8.500000        0.951740        0.012785        -0.001360       1
-9.000000        0.995127        0.013385        0.000914        1
-9.500000        1.036172        0.014296        0.003470        1
-10.000000       1.081070        0.014968        0.005267        1
-
-# NACA 0024
-Angle             Cl                    Cd                  Cm                  Converged
--9.000000       -0.864768       0.012569        -0.027135       1
--8.500000       -0.823415       0.012014        -0.024817       1
--8.000000       -0.782011       0.011453        -0.022471       1
--7.500000       -0.737289       0.011032        -0.020577       1
--7.000000       -0.692037       0.010641        -0.018723       1
--6.500000       -0.648409       0.010265        -0.016488       1
--6.000000       -0.605018       0.010032        -0.014046       1
--5.500000       -0.558701       0.009820        -0.012160       1
--5.000000       -0.511532       0.009573        -0.010461       1
--4.500000       -0.462230       0.009393        -0.009124       1
--4.000000       -0.411535       0.009270        -0.008018       1
--3.500000       -0.362098       0.009104        -0.006682       1
--3.000000       -0.311723       0.008984        -0.005500       1
--2.500000       -0.260253       0.008921        -0.004502       1
--2.000000       -0.208181       0.008854        -0.003614       1
--1.500000       -0.156660       0.008757        -0.002623       1
--1.000000       -0.104518       0.008707        -0.001738       1
--0.500000       -0.051884       0.008707        -0.000939       1
-0.000000        -0.000000       0.008724        0.000000        1
-0.500000        0.051886        0.008707        0.000939        1
-1.000000        0.104525        0.008707        0.001736        1
-1.500000        0.156676        0.008757        0.002619        1
-2.000000        0.208210        0.008854        0.003608        1
-2.500000        0.260298        0.008920        0.004493        1
-3.000000        0.311791        0.008983        0.005485        1
-3.500000        0.362195        0.009104        0.006662        1
-4.000000        0.411665        0.009270        0.007990        1
-4.500000        0.462401        0.009393        0.009087        1
-5.000000        0.511758        0.009573        0.010414        1
-5.500000        0.559000        0.009820        0.012097        1
-6.000000        0.605465        0.010034        0.013953        1
-6.500000        0.648957        0.010266        0.016375        1
-7.000000        0.692596        0.010640        0.018609        1
-7.500000        0.737921        0.011031        0.020449        1
-8.000000        0.782741        0.011451        0.022324        1
-8.500000        0.824288        0.012011        0.024646        1
-9.000000        0.865706        0.012568        0.026949        1
-9.500000        0.904456        0.013203        0.029650        1
-10.000000       0.938182        0.014047        0.033035        1
-
-# NACA 2412
-Angle              Cl                   Cd                   Cm                 Converged
--9.000000       -0.787773       0.013449        -0.048237       1
--8.500000       -0.723067       0.012732        -0.050476       1
--8.000000       -0.655869       0.011790        -0.053339       1
--7.500000       -0.585067       0.011226        -0.056740       1
--7.000000       -0.526312       0.010445        -0.057490       1
--6.500000       -0.466806       0.009833        -0.058261       1
--6.000000       -0.412667       0.009334        -0.057749       1
--5.500000       -0.359239       0.008880        -0.057082       1
--5.000000       -0.305405       0.008443        -0.056492       1
--4.500000       -0.251254       0.008056        -0.055954       1
--4.000000       -0.196898       0.007693        -0.055468       1
--3.500000       -0.142322       0.007368        -0.055039       1
--3.000000       -0.087772       0.007085        -0.054613       0
--2.500000       -0.032826       0.006811        -0.054312       1
--2.000000       0.021764        0.006588        -0.053932       1
--1.500000       0.076533        0.006363        -0.053625       1
--1.000000       0.130421        0.006085        -0.053202       0
--0.500000       0.183792        0.005829        -0.052649       1
-0.000000        0.237103        0.005652        -0.051989       1
-0.500000        0.290002        0.005531        -0.051132       0
-1.000000        0.341502        0.005475        -0.049810       1
-1.500000        0.392299        0.005576        -0.048199       1
-2.000000        0.450289        0.005772        -0.048248       1
-2.500000        0.518929        0.006045        -0.050911       1
-3.000000        0.592318        0.006346        -0.054766       1
-3.500000        0.667040        0.006639        -0.058992       1
-4.000000        0.715035        0.006916        -0.057406       1
-4.500000        0.762628        0.007275        -0.055752       1
-5.000000        0.809366        0.007763        -0.053989       0
-5.500000        0.855959        0.008327        -0.052249       1
-6.000000        0.902230        0.009032        -0.050563       1
-6.500000        0.948403        0.009836        -0.048960       1
-7.000000        0.994784        0.010666        -0.047450       1
-7.500000        1.041375        0.011485        -0.046011       1
-8.000000        1.087917        0.012295        -0.044589       1
-8.500000        1.134252        0.013090        -0.043157       1
-9.000000        1.179777        0.013911        -0.041630       1
-9.500000        1.224496        0.014743        -0.039995       1
-10.000000       1.266879        0.015692        -0.038043       1
-
-# NACA 3412
-Angle              Cl                   Cd                  Cm                  Converged
--9.000000       -0.467441       0.069430        -0.042425       1
--8.500000       -0.422801       0.108199        0.026570        0
--8.000000       -0.536924       0.000184        -0.044915       0
--7.500000       -0.432788       0.042413        -0.051692       0
--7.000000       -0.350592       0.015458        -0.056444       1
--6.500000       -0.343792       0.031273        -0.055326       1
--6.000000       -0.309953       0.022884        -0.050917       0
--5.500000       -0.299154       0.116324        0.032713        0
--5.000000       -0.214410       0.017664        -0.047204       1
--4.500000       -0.164334       0.013097        -0.044826       1
--4.000000       -0.113697       0.011195        -0.043502       1
--3.500000       -0.061370       0.010593        -0.042297       1
--3.000000       -0.009111       0.010033        -0.041095       1
--2.500000       0.042539        0.009427        -0.039940       1
--2.000000       0.095948        0.009253        -0.039099       1
--1.500000       0.149384        0.009045        -0.038299       1
--1.000000       0.203231        0.009030        -0.037661       1
--0.500000       0.257042        0.008995        -0.037033       1
-0.000000        0.311240        0.009168        -0.036524       1
-0.500000        0.364718        0.009348        -0.035947       1
-1.000000        0.417909        0.009640        -0.035366       1
-1.500000        0.470061        0.010090        -0.034678       1
-2.000000        0.514852        0.008976        -0.033419       1
-2.500000        0.555735        0.008552        -0.029600       0
-3.000000        0.633542        0.008928        -0.034156       1
-3.500000        0.717864        0.009432        -0.040466       1
-4.000000        0.764392        0.009712        -0.038552       1
-4.500000        0.811884        0.010003        -0.036840       1
-5.000000        0.859865        0.010341        -0.035265       1
-5.500000        0.908249        0.010728        -0.033828       1
-6.000000        0.957071        0.011190        -0.032563       1
-6.500000        1.004527        0.011851        -0.031163       1
-7.000000        1.052044        0.012544        -0.029854       1
-7.500000        1.102354        0.012985        -0.029056       1
-8.000000        1.152061        0.013477        -0.028214       1
-8.500000        1.200971        0.014023        -0.027297       1
-9.000000        1.249468        0.014570        -0.026374       1
-9.500000        1.296781        0.015180        -0.025315       1
-10.000000       1.342933        0.015836        -0.024129       1
+using Xfoil, Plots, Printf
+pyplot()
 
 
-# NACA 4412
-Angle              Cl                   Cd                  Cm              Converged
--9.000000       -0.501679       0.013943        -0.108406       1
--8.500000       -0.450057       0.012475        -0.108061       1
--8.000000       -0.398891       0.011768        -0.107175       1
--7.500000       -0.344963       0.011178        -0.106742       1
--7.000000       -0.290869       0.010605        -0.106251       1
--6.500000       -0.237735       0.009770        -0.105718       1
--6.000000       -0.182825       0.009244        -0.105405       1
--5.500000       -0.127281       0.008856        -0.105144       1
--5.000000       -0.071880       0.008409        -0.104874       1
--4.500000       -0.016188       0.008055        -0.104656       1
--4.000000       0.039567        0.007782        -0.104473       1
--3.500000       0.095446        0.007592        -0.104306       1
--3.000000       0.151123        0.007448        -0.104103       0
--2.500000       0.206831        0.007274        -0.103964       1
--2.000000       0.262541        0.007136        -0.103840       1
--1.500000       0.317926        0.007021        -0.103688       1
--1.000000       0.373341        0.006966        -0.103534       1
--0.500000       0.428782        0.006897        -0.103416       1
-0.000000        0.483159        0.006787        -0.103180       0
-0.500000        0.536462        0.006343        -0.102878       1
-1.000000        0.584775        0.005934        -0.101042       1
-1.500000        0.652379        0.005987        -0.103244       1
-2.000000        0.705372        0.006232        -0.102609       1
-2.500000        0.759181        0.006463        -0.102157       1
-3.000000        0.813450        0.006687        -0.101815       1
-3.500000        0.866825        0.006976        -0.101335       0
-4.000000        0.920662        0.007242        -0.100963       1
-4.500000        0.973869        0.007548        -0.100504       1
-5.000000        1.025505        0.007961        -0.099802       1
-5.500000        1.077665        0.008336        -0.099213       1
-6.000000        1.128130        0.008823        -0.098365       1
-6.500000        1.176507        0.009448        -0.097203       1
-7.000000        1.220703        0.010361        -0.095405       1
-7.500000        1.260969        0.011520        -0.093014       1
-8.000000        1.297528        0.012860        -0.090059       1
-8.500000        1.334721        0.014035        -0.087194       1
-9.000000        1.368157        0.015242        -0.083681       1
-9.500000        1.400947        0.016273        -0.080004       1
-10.000000       1.431322        0.017471        -0.076161       1
+function airfoil(file)
+    # read airfoil coordinates from a file
+    x, y = open(file, "r") do f
+        x = Float64[]
+        y = Float64[]
+        for line in eachline(f)
+            entries = split(chomp(line))
+            push!(x, parse(Float64, entries[1]))
+            push!(y, parse(Float64, entries[2]))
+        end
+        x, y
+    end
 
+    # load airfoil coordinates into XFOIL
 
+    Xfoil.set_coordinates(x,y)
+
+    # plot the airfoil geometry
+    scatter(x, y, label="", framestyle=:none, aspect_ratio=1.0, show=true)
+
+    # repanel using XFOIL's `PANE` command
+    xr, yr = Xfoil.pane()
+
+    # plot the refined airfoil geometry
+    scatter(xr, yr, label="", framestyle=:none, aspect_ratio=1.0, show=true)
+
+end
+
+airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_0008.dat")
+airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_0012.dat")
+airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_0024.dat")
+
+# set operating conditions
+# range of angle of attacks, in degrees
+alpha = -9:0.5:10
+# Reynolds number
+re = 1e6 
+
+# initialize outputs
+n_a = length(alpha)
+c_l1 = zeros(n_a)
+c_d1 = zeros(n_a)
+c_dp1 = zeros(n_a)
+c_m1 = zeros(n_a)
+converged1 = zeros(Bool, n_a)
+
+c_l2 = zeros(n_a)
+c_d2 = zeros(n_a)
+c_dp2 = zeros(n_a)
+c_m2 = zeros(n_a)
+converged2 = zeros(Bool, n_a)
+
+c_l3 = zeros(n_a)
+c_d3 = zeros(n_a)
+c_dp3 = zeros(n_a)
+c_m3 = zeros(n_a)
+converged3 = zeros(Bool, n_a)
+
+function Air0008()
+    airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_0008.dat")
+    Re = re
+    # determine airfoil coefficients across a range of angle of attacks
+    for i = 1:n_a
+        c_l1[i], c_d1[i], c_dp1[i], c_m1[i], converged1[i] = Xfoil.solve_alpha(alpha[i], Re; iter=100, reinit=true)
+    end
+
+    # print results
+    println("NACA 4-series 0008")
+    println("Angle\t\tCl1\t\tCd1\t\tCm1\t\tConverged1")
+    for i = 1:n_a
+        @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l1[i],c_d1[i],c_m1[i],converged1[i])
+    end
+end
+
+function Air0012()
+    airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_0012.dat")
+    Re = re
+    # determine airfoil coefficients across a range of angle of attacks
+    for i = 1:n_a
+        c_l2[i], c_d2[i], c_dp2[i], c_m2[i], converged2[i] = Xfoil.solve_alpha(alpha[i], Re; iter=100, reinit=true)
+    end
+
+    # print results
+    println("NACA 4-series 0012")
+    println("Angle\t\tCl2\t\tCd2\t\tCm2\t\tConverged2")
+    for i = 1:n_a
+        @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l2[i],c_d2[i],c_m2[i],converged2[i])
+    end
+end
+
+function Air0024()
+    airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_0024.dat")
+    Re = re
+    # determine airfoil coefficients across a range of angle of attacks
+    for i = 1:n_a
+        c_l3[i], c_d3[i], c_dp3[i], c_m3[i], converged3[i] = Xfoil.solve_alpha(alpha[i], Re; iter=100, reinit=true)
+    end
+
+    # print results
+    println("NACA 4-series 0024")
+    println("Angle\t\tCl3\t\tCd3\t\tCm3\t\tConverged3")
+    for i = 1:n_a
+        @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l3[i],c_d3[i],c_m3[i],converged3[i])
+    end
+end
+
+Air0008()
+Air0012()
+Air0024()
+
+# plot results
+
+function AoACl()
+    plot(alpha, c_l1, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:blue)
+    plot!(alpha, c_l2, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:green)
+    plot!(alpha, c_l3, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:red)
+
+    # savefig("AoAvsClThickness.png")
+end
+
+function CdCl()
+    plot(c_d1, c_l1, label="", xlabel= "Drag Coefficient", ylabel="Lift Coefficient", show=true, color=:blue)
+    plot!(c_d2, c_l2, label="", xlabel= "Drag Coefficient", ylabel="Lift Coefficient", show=true, color=:green)
+    plot!(c_d3, c_l3, label="", xlabel= "Drag Coefficient", ylabel="Lift Coefficient", show=true, color=:red)
+
+    # savefig("CdClThickness.png")
+end
+
+display(CdCl())
+display(AoACl())
