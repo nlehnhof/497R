@@ -1,0 +1,100 @@
+using Xfoil, Plots, Printf
+pyplot()
+
+# read airfoil coordinates from a file
+x, y = open("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_0008.dat", "r") do f
+    x = Float64[]
+    y = Float64[]
+    for line in eachline(f)
+        entries = split(chomp(line))
+        push!(x, parse(Float64, entries[1]))
+        push!(y, parse(Float64, entries[2]))
+    end
+    x, y
+end
+
+# load airfoil coordinates into XFOIL
+Xfoil.set_coordinates(x,y)
+
+# plot the airfoil geometry
+scatter(x, y, label="", framestyle=:none, aspect_ratio=1.0, show=true)
+
+# repanel using XFOIL's `PANE` command
+xr, yr = Xfoil.pane()
+
+# plot the refined airfoil geometry
+scatter(xr, yr, label="", framestyle=:none, aspect_ratio=1.0, show=true)
+
+# set operating conditions
+alpha = -9:0.5:10 # range of angle of attacks, in degrees
+
+# Reynolds number
+re = 1e6
+re2 = 1e7
+re3 = 1e8
+
+# initialize outputs
+n_a = length(alpha)
+c_l1 = zeros(n_a)
+c_d1 = zeros(n_a)
+c_dp1 = zeros(n_a)
+c_m1 = zeros(n_a)
+converged1 = zeros(Bool, n_a)
+c_l2 = zeros(n_a)
+c_d2 = zeros(n_a)
+c_dp2 = zeros(n_a)
+c_m2 = zeros(n_a)
+converged2 = zeros(Bool, n_a)
+c_l3 = zeros(n_a)
+c_d3 = zeros(n_a)
+c_dp3 = zeros(n_a)
+c_m3 = zeros(n_a)
+converged3 = zeros(Bool, n_a)
+
+# determine airfoil coefficients across a range of angle of attacks
+# for i = 1:n_a
+    # c_l[i], c_d[i], c_dp[i], c_m[i], converged[i] = Xfoil.solve_alpha(alpha[i], re; iter=100, reinit=true)
+    # c_l[i], c_d[i], c_dp[i], c_m[i], converged[i] = Xfoil.solve_alpha(alpha[i], re2; iter=100, reinit=true)
+    # c_l[i], c_d[i], c_dp[i], c_m[i], converged[i] = Xfoil.solve_alpha(alpha[i], re3; iter=100, reinit=true)
+# end
+
+for i = 1:n_a
+    c_l1[i], c_d1[i], c_dp1[i], c_m1[i], converged1[i] = Xfoil.solve_alpha(alpha[i], re; iter=100, reinit=true)
+    c_l2[i], c_d2[i], c_dp2[i], c_m2[i], converged2[i] = Xfoil.solve_alpha(alpha[i], re2; iter=100, reinit=true)
+    c_l3[i], c_d3[i], c_dp3[i], c_m3[i], converged3[i] = Xfoil.solve_alpha(alpha[i], re3; iter=100, reinit=true)
+end
+
+# print results
+println("Angle\t\tCl\t\tCd\t\tCm\t\tConverged")
+for i = 1:n_a
+    @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l1[i],c_d1[i],c_m1[i],converged1[i])
+    @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l2[i],c_d2[i],c_m2[i],converged2[i])
+    @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l3[i],c_d3[i],c_m3[i],converged3[i])
+end
+
+# plot results
+function LiftCoefficient()
+    plot(alpha, c_l1, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:blue)
+    plot!(alpha, c_l2, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:green)
+    plot!(alpha, c_l3, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:red)
+    savefig("0008ReCl.png")
+end
+
+function DragCoefficient()
+    
+    plot(alpha, c_d1, label="", xlabel="Angle of Attack (degrees)", ylabel="Drag Coefficient", show=true, color=:blue )
+    plot!(alpha, c_d2, label="", xlabel="Angle of Attack (degrees)", ylabel="Drag Coefficient", show=true,color=:green)
+    plot!(alpha, c_d3, label="", xlabel="Angle of Attack (degrees)", ylabel="Drag Coefficient", show=true,color=:red)
+    savefig("0008ReCd.png")
+end
+
+function MomentCoefficient()    
+    plot(alpha, c_m1, label="", xlabel="Angle of Attack (degrees)", ylabel="Moment Coefficient", show=true, color=:blue)
+    plot!(alpha, c_m2, label="", xlabel="Angle of Attack (degrees)", ylabel="Moment Coefficient", show=true, color=:green)
+    plot!(alpha, c_m3, label="", xlabel="Angle of Attack (degrees)", ylabel="Moment Coefficient", show=true, color=:red)
+    savefig("0008ReCm.png")
+end    
+    
+display(LiftCoefficient())
+display(DragCoefficient())
+display(MomentCoefficient())
