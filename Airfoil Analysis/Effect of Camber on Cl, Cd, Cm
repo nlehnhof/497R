@@ -1,0 +1,134 @@
+using Xfoil, Plots, Printf
+pyplot()
+
+
+function airfoil(file)
+    # read airfoil coordinates from a file
+    x, y = open(file, "r") do f
+        x = Float64[]
+        y = Float64[]
+        for line in eachline(f)
+            entries = split(chomp(line))
+            push!(x, parse(Float64, entries[1]))
+            push!(y, parse(Float64, entries[2]))
+        end
+        x, y
+    end
+
+    # load airfoil coordinates into XFOIL
+
+    Xfoil.set_coordinates(x,y)
+
+    # plot the airfoil geometry
+    scatter(x, y, label="", framestyle=:none, aspect_ratio=1.0, show=true)
+
+    # repanel using XFOIL's `PANE` command
+    xr, yr = Xfoil.pane()
+
+    # plot the refined airfoil geometry
+    scatter(xr, yr, label="", framestyle=:none, aspect_ratio=1.0, show=true)
+
+end
+
+airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_2412.dat")
+airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_3412.dat")
+airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_4412.dat")
+
+# set operating conditions
+# range of angle of attacks, in degrees
+alpha = -5:0.5:10
+# Reynolds number
+re = 1e6 
+
+# initialize outputs
+n_a = length(alpha)
+c_l1 = zeros(n_a)
+c_d1 = zeros(n_a)
+c_dp1 = zeros(n_a)
+c_m1 = zeros(n_a)
+converged1 = zeros(Bool, n_a)
+
+c_l2 = zeros(n_a)
+c_d2 = zeros(n_a)
+c_dp2 = zeros(n_a)
+c_m2 = zeros(n_a)
+converged2 = zeros(Bool, n_a)
+
+c_l3 = zeros(n_a)
+c_d3 = zeros(n_a)
+c_dp3 = zeros(n_a)
+c_m3 = zeros(n_a)
+converged3 = zeros(Bool, n_a)
+
+function Air2412()
+    airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_2412.dat")
+    Re = re
+    # determine airfoil coefficients across a range of angle of attacks
+    for i = 1:n_a
+        c_l1[i], c_d1[i], c_dp1[i], c_m1[i], converged1[i] = Xfoil.solve_alpha(alpha[i], Re; iter=100, reinit=true)
+    end
+
+    # print results
+    println("NACA 4-series 2412")
+    println("Angle\t\tCl1\t\tCd1\t\tCm1\t\tConverged1")
+    for i = 1:n_a
+        @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l1[i],c_d1[i],c_m1[i],converged1[i])
+    end
+end
+
+function Air3412()
+    airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_3412.dat")
+    Re = re
+    # determine airfoil coefficients across a range of angle of attacks
+    for i = 1:n_a
+        c_l2[i], c_d2[i], c_dp2[i], c_m2[i], converged2[i] = Xfoil.solve_alpha(alpha[i], Re; iter=100, reinit=true)
+    end
+
+    # print results
+    println("NACA 4-series 3412")
+    println("Angle\t\tCl2\t\tCd2\t\tCm2\t\tConverged2")
+    for i = 1:n_a
+        @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l2[i],c_d2[i],c_m2[i],converged2[i])
+    end
+end
+
+function Air4412()
+    airfoil("C:\\Users\\nlehn\\OneDrive - Brigham Young University\\Airframe Analysis\\NACA Airfoils\\NACA_4412.dat")
+    Re = re
+    # determine airfoil coefficients across a range of angle of attacks
+    for i = 1:n_a
+        c_l3[i], c_d3[i], c_dp3[i], c_m3[i], converged3[i] = Xfoil.solve_alpha(alpha[i], Re; iter=100, reinit=true)
+    end
+
+    # print results
+    println("NACA 4-series 4412")
+    println("Angle\t\tCl3\t\tCd3\t\tCm3\t\tConverged3")
+    for i = 1:n_a
+        @printf("%8f\t%8f\t%8f\t%8f\t%d\n",alpha[i],c_l3[i],c_d3[i],c_m3[i],converged3[i])
+    end
+end
+
+# Air2412()
+# Air3412()
+# Air4412()
+
+# # plot results
+
+# function AoACl()
+#     plot(alpha, c_l1, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:blue)
+#     plot!(alpha, c_l2, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:green)
+#     plot!(alpha, c_l3, label="", xlabel="Angle of Attack (degrees)", ylabel="Lift Coefficient", show=true, color=:red)
+
+#     # savefig("AoAvsClCamber.png")
+# end
+
+# function CdCl()
+#     plot(c_d1, c_l1, label="", xlabel= "Drag Coefficient", ylabel="Lift Coefficient", show=true, color=:blue)
+#     plot!(c_d2, c_l2, label="", xlabel= "Drag Coefficient", ylabel="Lift Coefficient", show=true, color=:green)
+#     plot!(c_d3, c_l3, label="", xlabel= "Drag Coefficient", ylabel="Lift Coefficient", show=true, color=:red)
+
+#     # savefig("CdClCamber.png")
+# end
+
+# display(CdCl())
+# display(AoACl())
